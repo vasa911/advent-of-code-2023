@@ -1,8 +1,16 @@
 ﻿using System.Text.RegularExpressions;
 
+using var reader = new StreamReader("input.txt");
+var content = reader.ReadToEnd()
+    .Split(Environment.NewLine);
+var sum = CalculateSum(content);
 
-var numbers = new List<(string, int)>()
+Console.WriteLine(sum);
+
+public partial class Program
 {
+    public static List<(string, int)> Numbers = new List<(string, int)>()
+    {
     ("one", 1 ),
     ("two", 2 ),
     ("three", 3 ),
@@ -12,39 +20,51 @@ var numbers = new List<(string, int)>()
     ("seven", 7 ),
     ("eight", 8 ),
     ("nine", 9 ),
+    };
 
-};
 
+    public static int CalculateSum(string[] content)
+    {
+        var processed = content
+           .Select(MapCharacterToNumbers)
+            .Where(i => !string.IsNullOrWhiteSpace(i))
+            .ToArray();
 
-using var reader = new StreamReader("input.txt");
-var content = reader.ReadToEnd()
-    .Split(Environment.NewLine)
-    .Select(line =>
+        int sum = 0;
+
+        foreach (var line in processed)
+        {
+            int number = ExtractNumberFromLine(line);
+            sum += number;
+        }
+
+        return sum;
+    }
+
+    public static int ExtractNumberFromLine(string line)
+    {
+        int number = 0;
+        if (line.Count() == 1)
+        {
+            number = int.Parse(line[0].ToString() + line[0].ToString());
+        }
+        else
+        {
+            number = int.Parse(line[0].ToString() + line[line.Length - 1].ToString());
+        }
+
+        return number;
+    }
+
+    public static string MapCharacterToNumbers(string line)
     {
         string processedChars = "";
         foreach (var charInLine in line)
         {
             processedChars += charInLine;
-            numbers.ForEach(num => { processedChars = processedChars.Replace(num.Item1, num.Item2.ToString()); });
+            Numbers.ForEach(num => { processedChars = processedChars.Replace(num.Item1, num.Item2.ToString()); });
         }
+        processedChars = Regex.Replace(processedChars, @"[^\d]", "");
         return processedChars;
-    })
-    .Select(i => Regex.Replace(i, @"[^\d]", ""))
-    .Where(i => !string.IsNullOrWhiteSpace(i)).ToArray();
-int sum = 0;
-
-foreach (var line in content)
-{
-    int number = 0;
-    if (line.Count() == 1)
-    {
-        number = int.Parse(line[0].ToString() + line[0].ToString());
     }
-    else
-    {
-        number = int.Parse(line[0].ToString() + line[line.Length - 1].ToString());
-    }
-    sum += number;
 }
-
-Console.WriteLine(sum);
