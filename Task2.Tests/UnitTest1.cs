@@ -21,16 +21,16 @@ namespace Task2.Tests
 
 
         [Test]
-        [TestCase("two1nine", "219")]
+        [TestCase("two1nine", "29")]
         [TestCase("eightwothree", "83")]
-        [TestCase("abcone2threexyz", "123")]
-        [TestCase("xtwone3four", "234")]
-        [TestCase("nineeightseven2", "9872")]
-        [TestCase("zoneight234", "1234")]
-        [TestCase("pqrstsixteen", "6")] 
-        [TestCase("pjb92two5sevenfkb6three", "9225763")]
-        [TestCase("onetwothreefourfivesixseveneightnine", "123456789")] 
-        [TestCase("dxbxkzmpzzthreestcvtvhftgzctnvnshzgqtbgxlrqkthreefgxdrfmm7", "337")]
+        [TestCase("abcone2threexyz", "13")]
+        [TestCase("xtwone3four", "24")]
+        [TestCase("nineeightseven2", "92")]
+        [TestCase("zoneight234", "14")]
+        [TestCase("pqrstsixteen", "66")] 
+        [TestCase("pjb92two5sevenfkb6three", "93")]
+        [TestCase("onetwothreefourfivesixseveneightnine", "19")] 
+        [TestCase("dxbxkzmpzzthreestcvtvhftgzctnvnshzgqtbgxlrqkthreefgxdrfmm7", "37")]
         public void MapCharacterToNumbers_CorrectValue_CorrectResult(string input, string expected)
         {
             var actual = Program.MapCharacterToNumbers(input);

@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-using var reader = new StreamReader("input.txt");
+﻿using var reader = new StreamReader("input.txt");
 var content = reader.ReadToEnd()
     .Split(Environment.NewLine);
 var sum = CalculateSum(content);
@@ -59,12 +57,54 @@ public partial class Program
     public static string MapCharacterToNumbers(string line)
     {
         string processedChars = "";
-        foreach (var charInLine in line)
+        string leftNumber = "";
+        for (int i = 0; i < line.Length;i++)
         {
-            processedChars += charInLine;
-            Numbers.ForEach(num => { processedChars = processedChars.Replace(num.Item1, num.Item2.ToString()); });
+            processedChars += line[i].ToString();
+            leftNumber = GetNumber(line[i], processedChars);
+            if (!string.IsNullOrEmpty(leftNumber))
+            {
+                break;
+            }
         }
-        processedChars = Regex.Replace(processedChars, @"[^\d]", "");
-        return processedChars;
+
+        processedChars = "";
+        string rightNumber = "";
+        for(int i = line.Length - 1; i >= 0; i--)
+        {
+            processedChars += line[i].ToString();
+            var charArray = processedChars.ToCharArray();
+            Array.Reverse(charArray);
+            var reversed = new string(charArray);
+            rightNumber = GetNumber(line[i], reversed);
+            if (!string.IsNullOrEmpty(rightNumber))
+            {
+                break;
+            }
+        }
+
+        return leftNumber+rightNumber;
     }
+
+    private static string GetNumber(char currentChar, string processedChars)
+    {
+        string result = "";
+        if (char.IsDigit(currentChar))
+        {
+            result += currentChar.ToString();
+        }
+        else
+        {
+            foreach (var num in Numbers)
+            {
+                if (processedChars.Contains(num.Item1))
+                {
+                    result += num.Item2;
+                }
+            }
+
+
+        }
+        return result;
+    } 
 }
